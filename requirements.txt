@@ -1,3 +1,4 @@
 Flask
 torch
 transformers
+sentence_transformers
