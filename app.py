@@ -1,5 +1,5 @@
 from flask import Flask, request, jsonify, render_template
-from analyze import get_sentiment, compute_embeddings, classify_email
+from analyze import get_sentiment, compute_embeddings, classify_email, add_class
 app = Flask(__name__, template_folder='templates')
 
 @app.route("/")
@@ -47,6 +47,13 @@ def classify_with_get():
     text = request.args.get('text')
     classifications = classify_email(text)
     return jsonify({"message": "Email classified", "classifications": classifications}), 200
+
+@app.route("/api/v1/add-class/", methods=['GET'])
+def add_new_class():
+    c = request.args.get('class')
+    add_class(c)
+
+    return jsonify({"message":"class added"})
 
 
 if __name__ == "__main__":

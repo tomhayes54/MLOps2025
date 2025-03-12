@@ -5,10 +5,8 @@ import numpy as np
 sentiment_pipeline = pipeline("sentiment-analysis")
 model = SentenceTransformer('sentence-transformers/all-MiniLM-L6-v2')
 
-
-EMAIL_CLASSES = [
-    "Work", "Sports", "Food"
-]
+with open("classes.txt") as f:                          # Open new fiole classes.txt
+    EMAIL_CLASSES = [x.strip() for x in f.readlines()]  # Read file removing leading & trailing white space.
 
 def get_sentiment(text):
     response = sentiment_pipeline(text)
@@ -17,6 +15,11 @@ def get_sentiment(text):
 def compute_embeddings(embeddings = EMAIL_CLASSES):
     embeddings = model.encode(embeddings)
     return zip(EMAIL_CLASSES, embeddings)
+
+def add_class(c):                                       # function to add new classes
+    EMAIL_CLASSES.append(c)                             #
+    with open("classes.txt", "a") as f:                 #
+        f.write(f"\n{c}")                               #
 
 def classify_email(text):
     # Encode the input text
